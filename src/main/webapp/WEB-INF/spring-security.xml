@@ -5,9 +5,23 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-
+    <!--
+        1、login-page="/login" –- 用于显示自定义登录表单的页面
+        2、authentication-failure-url="/login?error" –- 如果验证失败，则将转向URL：/login?error
+        3、logout-success-url="/login?logout" -–如果登录成功，则将转向URL：/logout
+        4、username-parameter="username" -– 请求包含"username"的名字。在HTML中，这是在输入文本的名称
+    -->
     <http auto-config="true">
         <intercept-url pattern="/admin**" access="ROLE_USER" />
+        <form-login
+                login-page="/login"
+                default-target-url="/welcome"
+                authentication-failure-url="/login?error"
+                username-parameter="username"
+                password-parameter="password" />
+        <logout logout-success-url="/login?logout" />
+        <!-- 启用跨站请求伪造(CSRF)保护，在XML中，默认情况下CSRF保护被禁用。 -->
+        <csrf/>
     </http>
 
     <authentication-manager>
